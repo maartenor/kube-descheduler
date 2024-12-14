@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: kube-scheduler
+  name: kube-descheduler
 spec:
   destination:
     name: ''

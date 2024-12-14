@@ -1,21 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: descheduler
-  namespace: argocd
+  name: kube-scheduler
 spec:
-  project: default
-  source:
-    repoURL: https://kubernetes-sigs.github.io/descheduler/
-    targetRevision: latest
-    chart: descheduler
-    helm:
-      parameters:
-        - name: "deschedulerPolicy"
-          value: "/policy/descheduler-policy.yaml"
   destination:
-    server: https://kubernetes.default.svc
+    name: ''
     namespace: kube-system
+    server: https://kubernetes.default.svc
+  source:
+    path: .
+    repoURL: git@github.com:maartenor/kube-descheduler
+    targetRevision: HEAD
+  sources: []
+  project: default
   syncPolicy:
     automated:
       prune: true

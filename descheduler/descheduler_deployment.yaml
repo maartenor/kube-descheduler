@@ -18,6 +18,7 @@ spec:
       containers:
         - name: descheduler
           image: k8s.gcr.io/descheduler/descheduler:v0.24.0
+          command: []  # Use default ENTRYPOINT from the image
           args:
             - --policy-config-file
             - /policy/descheduler-policy.yaml  # Pass file path as a separate argument

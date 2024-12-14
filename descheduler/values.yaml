@@ -1,17 +1,29 @@
 # https://github.com/kubernetes-sigs/descheduler/blob/master/charts/descheduler/values.yaml
+# Specifies the replica count for Deployment
+replicaCount: 1
+
 resources:
-  requests:
+  limits:
     cpu: 100m
     memory: 128Mi
-  limits:
-    cpu: 200m
-    memory: 256Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi
 
 # Required when running as a Deployment
 deschedulingInterval: 5m
 
-# Specifies the replica count for Deployment
-replicas: 1
+policyConfigMap:
+  name: descheduler-policy
+
+args:
+  - --policy-config-file=/policy/descheduler-policy.yaml
+  - --v=2
 
 nodeSelector:
   node-type-2: rpiCM4
+
+image:
+  repository: k8s.gcr.io/descheduler/descheduler
+  tag: v0.24.0
+  pullPolicy: IfNotPresent

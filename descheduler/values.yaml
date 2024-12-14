@@ -1,0 +1,17 @@
+# https://github.com/kubernetes-sigs/descheduler/blob/master/charts/descheduler/values.yaml
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 200m
+    memory: 256Mi
+
+# Required when running as a Deployment
+deschedulingInterval: 5m
+
+# Specifies the replica count for Deployment
+replicas: 1
+
+nodeSelector:
+  node-type-2: rpiCM4

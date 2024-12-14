@@ -15,19 +15,51 @@ spec:
       labels:
         app: descheduler
     spec:
+      priorityClassName: system-cluster-critical
+      serviceAccountName: descheduler-sa
       containers:
         - name: descheduler
-          image: k8s.gcr.io/descheduler/descheduler:v0.24.0
-          command: []  # Use default ENTRYPOINT from the image
+          image: registry.k8s.io/descheduler/descheduler:v0.31.0
+          imagePullPolicy: IfNotPresent
+          command:
+            - "/bin/descheduler"
           args:
-            - --policy-config-file
-            - /policy/descheduler-policy.yaml  # Pass file path as a separate argument
-            - --v=2
+            - "--policy-config-file"
+            - "/policy-dir/policy.yaml"
+            - "--descheduling-interval"
+            - "5m"
+            - "--v"
+            - "3"
+          ports:
+          - containerPort: 10258
+            protocol: TCP
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /healthz
+              port: 10258
+              scheme: HTTPS
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
           volumeMounts:
-            - name: policy-volume
-              mountPath: /policy  # This is where the ConfigMap is mounted
+            - mountPath: /policy-dir
+              name: policy-volume
       volumes:
-        - name: policy-volume
-          configMap:
-            name: descheduler-policy
-      restartPolicy: Always
+      - name: policy-volume
+        configMap:
+          name: descheduler-policy-configmap

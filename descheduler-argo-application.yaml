@@ -8,7 +8,7 @@ spec:
     namespace: kube-system
     server: https://kubernetes.default.svc
   source:
-    path: .
+    path: descheduler
     repoURL: git@github.com:maartenor/kube-descheduler
     targetRevision: HEAD
   sources: []

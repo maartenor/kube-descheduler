@@ -19,11 +19,12 @@ spec:
         - name: descheduler
           image: k8s.gcr.io/descheduler/descheduler:v0.24.0
           args:
-            - --policy-config-file=/policy/descheduler-policy.yaml
+            - --policy-config-file
+            - /policy/descheduler-policy.yaml  # Pass file path as a separate argument
             - --v=2
           volumeMounts:
             - name: policy-volume
-              mountPath: /policy # Match this path to the args above
+              mountPath: /policy  # This is where the ConfigMap is mounted
       volumes:
         - name: policy-volume
           configMap:

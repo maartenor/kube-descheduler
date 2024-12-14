@@ -10,6 +10,8 @@ spec:
   selector:
     matchLabels:
       app: descheduler
+  nodeSelector:
+    node-type-2: rpiCM4
   template:
     metadata:
       labels:
